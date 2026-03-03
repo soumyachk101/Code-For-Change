@@ -7,17 +7,15 @@ import logo from "../assets/st-text-hero.png";
 
 const Hero = () => {
   useEffect(() => {
-    if (
-      !document.querySelector(
-        'script[src="https://apply.devfolio.co/v2/sdk.js"]',
-      )
-    ) {
-      const script = document.createElement("script");
-      script.src = "https://apply.devfolio.co/v2/sdk.js";
-      script.async = true;
-      script.defer = true;
-      document.body.appendChild(script);
-    }
+    const script = document.createElement("script");
+    script.src = "https://apply.devfolio.co/v2/sdk.js";
+    script.async = true;
+    script.defer = true;
+    document.body.appendChild(script);
+
+    return () => {
+      document.body.removeChild(script);
+    };
   }, []);
 
   const calculateTimeLeft = () => {
@@ -84,7 +82,7 @@ const Hero = () => {
 
           <div className="hero-buttons fade-in-up delay-3">
             <div
-              class="apply-button"
+              className="apply-button"
               data-hackathon-slug="code-for-change-2026"
               data-button-theme="dark"
               style={{ height: "44px", width: "312px" }}
