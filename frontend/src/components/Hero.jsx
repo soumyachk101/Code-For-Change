@@ -5,16 +5,6 @@ import { Button } from "@mui/material";
 import logo from "../assets/st-text-hero.png";
 
 const Hero = () => {
-  useEffect(() => {
-    const script = document.createElement('script');
-    script.src = 'https://apply.devfolio.co/v2/sdk.js';
-    script.async = true;
-    script.defer = true;
-    document.body.appendChild(script);
-    return () => {
-      document.body.removeChild(script);
-    }
-  }, []);
 
   const calculateTimeLeft = () => {
     const difference = +new Date("2026-04-10") - +new Date();

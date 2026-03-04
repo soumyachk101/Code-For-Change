@@ -23,13 +23,22 @@
 </head>
 
 <body>
+  <!-- Devfolio Apply Button for verification (visible to bots in static HTML) -->
+  <div
+    class="apply-button"
+    data-hackathon-slug="code-for-change-2026"
+    data-button-theme="light"
+    style="height: 44px; width: 312px"
+  ></div>
+
   <!-- Devfolio Sponsor Logo for verification -->
   <div style="position: absolute; width: 1px; height: 1px; overflow: hidden; opacity: 0.01;">
     <img src="/devfolio_logo.png" alt="DEVFOLIO LOGO" />
   </div>
+
   <div id="root"></div>
   <script type="module" src="/src/main.jsx"></script>
-  <script async defer src="https://apply.devfolio.co/v2/sdk.js"></script>
+  <script defer async src="https://apply.devfolio.co/v2/sdk.js"></script>
 </body>
 
 </html>
