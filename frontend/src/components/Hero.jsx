@@ -35,11 +35,11 @@ const Hero = () => {
   const [timeLeft, setTimeLeft] = useState(calculateTimeLeft());
 
   useEffect(() => {
-    const timer = setTimeout(() => {
-      setTimeLeft(calculateTimeLeft());
-    }, 1000);
-    return () => clearTimeout(timer);
-  });
+  const timer = setInterval(() => {
+    setTimeLeft(calculateTimeLeft());
+  }, 1000);
+  return () => clearInterval(timer);
+}, []);
 
   return (
     <section id="home">
