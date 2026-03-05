@@ -3,6 +3,11 @@
     background: var(--st-bg-primary);
 }
 
+.sponsor-tiers-container {
+    display: flex;
+    flex-direction: column;
+}
+
 .sponsor-tier {
     margin-bottom: 70px;
     text-align: center;
@@ -48,6 +53,7 @@
     align-items: center;
     justify-content: center;
     padding: 20px;
+    overflow: visible; /* ensures tooltip isn't clipped */
     transition: all 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94);
 }
 
@@ -63,14 +69,19 @@
 
 .sponsor-logo-img {
     max-width: 100%;
-    max-height: 100%;
+    max-height: 60px;
     object-fit: contain;
-    filter:  brightness(0.9);
+    filter: brightness(0.9);
     transition: filter 0.3s ease;
 }
 
+/* Do not modify Devfolio logo per their branding guidelines */
+.sponsor-card-new:has(img[alt="DEVFOLIO LOGO"]) .sponsor-logo-img {
+    filter: brightness(1);
+}
+
 .sponsor-card-new:hover .sponsor-logo-img {
-    filter: grayscale(0%) brightness(1);
+    filter: brightness(1);
 }
 
 .sponsor-name-tooltip {
@@ -85,6 +96,7 @@
     font-family: var(--st-font-classic);
     text-transform: uppercase;
     letter-spacing: 1px;
+    white-space: nowrap;
     opacity: 0;
     pointer-events: none;
     transition: opacity 0.3s;
@@ -129,5 +141,11 @@
 
     .sponsor-tier-underline {
         margin-bottom: 30px;
+    }
+
+    .sponsor-name-tooltip {
+        max-width: 120px;
+        overflow: hidden;
+        text-overflow: ellipsis;
     }
 }
