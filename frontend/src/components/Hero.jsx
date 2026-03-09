@@ -24,11 +24,11 @@ const Hero = () => {
   const [timeLeft, setTimeLeft] = useState(calculateTimeLeft());
 
   useEffect(() => {
-  const timer = setInterval(() => {
-    setTimeLeft(calculateTimeLeft());
-  }, 1000);
-  return () => clearInterval(timer);
-}, []);
+    const timer = setTimeout(() => {
+      setTimeLeft(calculateTimeLeft());
+    }, 1000);
+    return () => clearTimeout(timer);
+  });
 
   return (
     <section id="home">
@@ -69,14 +69,6 @@ const Hero = () => {
           </div>
 
           <div className="hero-buttons fade-in-up delay-3">
-            <div
-              className="apply-button"
-              data-hackathon-slug="code-for-change-2026"
-              data-button-theme="dark"
-              style={{ height: "44px", width: "312px" }}
-            ></div>
-
-            {/* Keep schedule button */}
             <Button
               variant="outlined"
               className="view-schedule"
