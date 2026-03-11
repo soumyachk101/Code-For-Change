@@ -20,7 +20,7 @@ Code for Change 2.0 is an official hackathon event website designed to inform pa
 
 ## 📸 Screenshots
 
-> ```
-> ![Home Page](screenshot/homepage.png)
-> ![Event Details](screenshot/timeline.png)
-> ```
+<p align="center">
+  <img src="/screenshot/homepage.png" alt="Homepage" width="400"/>
+  <img src="/screenshot/timeline.png" alt="timeline" width="400"/>
+</p>
