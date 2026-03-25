@@ -6,7 +6,8 @@ import {
   FaShieldAlt, 
   FaGlobe, 
   FaCode,
-  FaLink
+  FaLink,
+  FaChartLine
 } from 'react-icons/fa';
 
 const themesData = [
@@ -52,6 +53,12 @@ const themesData = [
     description: 'Design and develop scalable web and mobile applications with seamless UI/UX and robust backend architectures.',
     color: '#ffcc00',
   },
+  {
+  icon: FaChartLine,
+  title: 'Fintech',
+  description: 'Build secure, high-performance financial platforms with real-time data processing, seamless payment integrations, and compliance-ready architectures.',
+  color: '#00c853',
+}
 ];
 
 export default themesData;
