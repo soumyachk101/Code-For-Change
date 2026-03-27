@@ -1,5 +1,6 @@
 import { motion } from "framer-motion";
 import { useInView } from "react-intersection-observer";
+import { Link } from "react-router-dom";
 import {
   FaGithub,
   FaInstagram,
@@ -26,13 +27,13 @@ const socialLinks = [
 ];
 
 const quickLinks = [
-  { label: "About", href: "#about" },
-  { label: "Timeline", href: "#timeline" },
-  { label: "Themes", href: "#themes" },
-  { label: "Prizes", href: "#prizes" },
-  { label: "Sponsors", href: "#sponsors" },
-  { label: "FAQ", href: "#faq" },
-  { label: "Venue", href: "#venue" },
+  { label: "About", href: "/#about" },
+  { label: "Timeline", href: "/#timeline" },
+  { label: "Themes", href: "/#themes" },
+  { label: "Prizes", href: "/#prizes" },
+  { label: "Sponsors", href: "/#sponsors" },
+  { label: "FAQ", href: "/#faq" },
+  { label: "Venue", href: "/#venue" },
 
 
 ];
@@ -132,11 +133,13 @@ export default function Footer() {
 
         {/* Quick Links */}
         <motion.div className="footer-col" variants={colVariant(1)}>
-          <h4 className="footer-col-title">Quick Links</h4>
+          <h4 className="footer-col-title">
+            <Link to="/" style={{ color: 'inherit', textDecoration: 'none' }}>Quick Links</Link>
+          </h4>
           <ul className="footer-link-list">
             {quickLinks.map((link, i) => (
               <li key={i}>
-                <a href={link.href}>{link.label}</a>
+                <Link to={link.href}>{link.label}</Link>
               </li>
             ))}
           </ul>
@@ -144,7 +147,9 @@ export default function Footer() {
 
         {/* Contact */}
         <motion.div className="footer-col" variants={colVariant(2)}>
-          <h4 className="footer-col-title">Contact</h4>
+          <h4 className="footer-col-title">
+            <a href="mailto:codeforchange2.0@gmail.com" style={{ color: 'inherit', textDecoration: 'none' }}>Contact</a>
+          </h4>
           <ul className="footer-link-list">
             <li>
               <a href="mailto:codeforchange2.0@gmail.com">

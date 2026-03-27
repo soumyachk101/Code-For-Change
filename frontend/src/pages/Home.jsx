@@ -1,4 +1,5 @@
-import React from "react";
+import React, { useEffect } from "react";
+import { useLocation } from "react-router-dom";
 import Navbar from "../components/Navbar";
 import Hero from "../components/Hero";
 import ParticleBackground from "../components/ParticleBg";
@@ -12,6 +13,16 @@ import Footer from "../components/Footer";
 import FAQ from "../components/FAQ";
 
 function Home() {
+  const { hash } = useLocation();
+
+  useEffect(() => {
+    if (hash) {
+      const element = document.getElementById(hash.replace("#", ""));
+      if (element) {
+        element.scrollIntoView({ behavior: "smooth" });
+      }
+    }
+  }, [hash]);
   return (
     <div className="page-wrapper">
       <ParticleBackground />

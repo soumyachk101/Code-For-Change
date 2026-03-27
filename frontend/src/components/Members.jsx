@@ -13,7 +13,9 @@ const Members = () => {
                   <img src={text} alt="meet the minds behind the upside down" className="hero-logo" />
         
         <br />
-        <h2 className="members-title ">CORE TEAM</h2>
+        <h2 className="members-title ">
+          <a href="#members" style={{ color: 'inherit', textDecoration: 'none' }}>CORE TEAM</a>
+        </h2>
         <p className="members-subtitle fade-in-up delay-1">
           The crew that keeps the lights on (and flickering).
         </p>
@@ -25,7 +27,16 @@ const Members = () => {
                 <img src={member.image} alt={member.name} />
               </div>
 
-              <h3 className="member-name">{member.name.toUpperCase()}</h3>
+              <h3 className="member-name">
+                <a 
+                  href={member.socials.linkedin || member.socials.instagram || "#"} 
+                  target="_blank" 
+                  rel="noopener noreferrer"
+                  style={{ color: 'inherit', textDecoration: 'none' }}
+                >
+                  {member.name.toUpperCase()}
+                </a>
+              </h3>
 
               <div className="member-socials">
                 {member.socials.linkedin && (
