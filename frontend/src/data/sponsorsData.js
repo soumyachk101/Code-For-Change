@@ -4,6 +4,7 @@ import vercel from "../assets/vercel.png";
 import lfx from "../assets/LFX_Education.png";
 import cnd from "../assets/Cn dgp.png";
 import bindu from "../assets/Bindu_with_fav.png";
+import grafana from "../assets/grafana.png";
 const sponsorsData = {
     platinum: [
         { name: 'Cloud Native Durgapur', logo: cnd },
@@ -15,6 +16,7 @@ const sponsorsData = {
         { name: 'Vercel', logo: vercel },
         { name: 'The Linux Foundation', logo: lfx },
         { name: 'Bindu', logo: bindu },
+        {name:"Grafana",logo:grafana}
 
     ],
 };

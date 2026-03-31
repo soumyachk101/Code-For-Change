@@ -12,7 +12,7 @@ import "../styles/footer.css";
 import footertext from "../assets/st-text-navbar.png";
 
 const socialLinks = [
-  { icon: FaGithub, href: "https://github.com/CodeNEST-NSHM", label: "GitHub" },
+  { icon: FaGithub, href: "https://discord.gg/VPprt8haws", label: "GitHub" },
   {
     icon: FaInstagram,
     href: "https://www.instagram.com/codenest_osdc?igsh=bm93ZXJwMDJ5ZjJu",
