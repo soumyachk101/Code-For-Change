@@ -12,7 +12,6 @@ import "../styles/footer.css";
 import footertext from "../assets/st-text-navbar.png";
 
 const socialLinks = [
-  { icon: FaGithub, href: "https://discord.gg/VPprt8haws", label: "GitHub" },
   {
     icon: FaInstagram,
     href: "https://www.instagram.com/codenest_osdc?igsh=bm93ZXJwMDJ5ZjJu",
@@ -23,7 +22,12 @@ const socialLinks = [
     href: "https://www.linkedin.com/company/codenest-osdc/",
     label: "LinkedIn",
   },
-  { icon: FaDiscord, href: "#", label: "Discord" },
+  { icon: FaDiscord, href: "https://discord.gg/VPprt8haws", label: "Discord" },
+  {
+    icon: FaEnvelope,
+    href: "mailto:codeforchange2.0@gmail.com",
+    label: "Email",
+  },
 ];
 
 const quickLinks = [

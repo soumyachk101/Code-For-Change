@@ -39,20 +39,51 @@
 
 /* ================= DESKTOP LINKS ================= */
 
+.nav-logo-link {
+  display: flex;
+  align-items: center;
+  text-decoration: none;
+}
+
 .nav-links {
   display: flex;
-  gap: 30px;
+  align-items: center;
+  gap: 4px;
 }
 
-.nav-links .MuiButton-root {
+.nav-link-btn {
   color: #cccccc !important;
-  font-family: 'Cinzel', serif;
-  text-transform: none;
-  transition: 0.3s ease;
+  font-family: 'Cinzel', serif !important;
+  font-size: 0.75rem !important;
+  text-transform: none !important;
+  white-space: nowrap;
+  transition: 0.3s ease !important;
+  padding: 6px 10px !important;
 }
 
-.nav-links .MuiButton-root:hover {
+.nav-link-btn:hover {
   color: #ffffff !important;
+}
+
+.nav-register-btn {
+  background-color: var(--st-red) !important;
+  color: white !important;
+  border-radius: 6px !important;
+  padding: 6px 16px !important;
+  font-family: 'Cinzel', serif !important;
+  font-size: 0.75rem !important;
+  font-weight: 600 !important;
+  text-transform: none !important;
+  white-space: nowrap;
+  box-shadow: 0 0 10px var(--st-red-glow) !important;
+  transition: all 0.3s ease !important;
+  margin-left: 8px !important;
+}
+
+.nav-register-btn:hover {
+  background-color: #ff1a1a !important;
+  box-shadow: 0 0 20px var(--st-red-glow) !important;
+  transform: translateY(-1px) !important;
 }
 
 /* ================= MOBILE MENU ================= */
@@ -89,7 +120,7 @@
 
 /* ================= RESPONSIVE ================= */
 
-@media (max-width: 992px) {
+@media (max-width: 1100px) {
   .nav-links {
     display: none;
   }

@@ -1,3 +1,4 @@
+import { useMemo } from 'react';
 import { motion } from 'framer-motion';
 import { useInView } from 'react-intersection-observer';
 import timelineData from '../data/timelineData';
@@ -112,16 +113,21 @@ function TimelineItem({ item, index, characterImg }) {
 export default function Timeline() {
   const [ref, inView] = useInView({ threshold: 0.05, triggerOnce: true });
 
+  const ashParticles = useMemo(
+    () =>
+      Array.from({ length: 12 }, () => ({
+        left: `${Math.random() * 100}%`,
+        animationDelay: `${Math.random() * 8}s`,
+        animationDuration: `${6 + Math.random() * 6}s`,
+      })),
+    []
+  );
+
   return (
     <section className="st-section timeline-section" id="timeline" ref={ref}>
-      {/* Floating ash particles — Upside Down vibe */}
       <div className="st-upside-particles" aria-hidden="true">
-        {[...Array(12)].map((_, i) => (
-          <span className="st-ash" key={i} style={{
-            left: `${Math.random() * 100}%`,
-            animationDelay: `${Math.random() * 8}s`,
-            animationDuration: `${6 + Math.random() * 6}s`,
-          }} />
+        {ashParticles.map((style, i) => (
+          <span className="st-ash" key={i} style={style} />
         ))}
       </div>
 
