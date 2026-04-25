@@ -654,6 +654,24 @@ function Home() {
           </div>
         </div>
 
+        <section className="location-section section-pad" id="location">
+          <div className="section-heading dark">
+            <p className="eyebrow">Venue</p>
+            <h2>Join us in person</h2>
+          </div>
+          <div className="location-map-wrapper">
+            <iframe 
+              src="https://maps.google.com/maps?q=NSHM%20Knowledge%20Campus,%20Durgapur&t=&z=15&ie=UTF8&iwloc=&output=embed" 
+              width="100%" 
+              height="100%" 
+              style={{ border: 0, filter: 'contrast(1.1) opacity(0.95)' }} 
+              allowFullScreen="" 
+              loading="lazy" 
+              referrerPolicy="no-referrer-when-downgrade"
+            />
+          </div>
+        </section>
+
         <footer className="synch-footer-advanced">
           <div className="footer-grid">
             <div className="footer-brand-col">
@@ -683,22 +701,6 @@ function Home() {
                   </a>
                 ))}
                 <a href="#register">Register</a>
-              </div>
-            </div>
-
-            <div className="footer-map-col">
-              <h3>Location</h3>
-              <p><MapPin size={16} /> NSHM Knowledge Campus, Durgapur</p>
-              <div className="footer-map-wrapper">
-                <iframe 
-                  src="https://maps.google.com/maps?q=NSHM%20Knowledge%20Campus,%20Durgapur&t=&z=15&ie=UTF8&iwloc=&output=embed" 
-                  width="100%" 
-                  height="100%" 
-                  style={{ border: 0, filter: 'contrast(1.1) opacity(0.95)' }} 
-                  allowFullScreen="" 
-                  loading="lazy" 
-                  referrerPolicy="no-referrer-when-downgrade"
-                />
               </div>
             </div>
           </div>
