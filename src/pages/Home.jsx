@@ -160,11 +160,14 @@ const socialLinks = [
 function RobotMascot({ className = "" }) {
   return (
     <div className={`robot-mascot ${className}`} aria-label="Code for Change 2.0 robot mascot" role="img">
-      <div className="robot-antenna" />
+      <div className="robot-antenna">
+        <span className="robot-antenna-ring" />
+      </div>
       <div className="robot-head">
         <span className="robot-ear robot-ear-left" />
         <span className="robot-ear robot-ear-right" />
         <div className="robot-screen">
+          <span className="robot-visor" />
           <span className="robot-eye" />
           <span className="robot-eye" />
           <span className="robot-smile" />
@@ -172,11 +175,12 @@ function RobotMascot({ className = "" }) {
       </div>
       <div className="robot-neck" />
       <div className="robot-body">
+        <span className="robot-chest-panel" />
         <span className="robot-core" />
-        <span className="robot-arm robot-arm-left" />
-        <span className="robot-arm robot-arm-right" />
-        <span className="robot-leg robot-leg-left" />
-        <span className="robot-leg robot-leg-right" />
+        <span className="robot-arm robot-arm-left"><span className="robot-hand" /></span>
+        <span className="robot-arm robot-arm-right"><span className="robot-hand" /></span>
+        <span className="robot-leg robot-leg-left"><span className="robot-foot" /></span>
+        <span className="robot-leg robot-leg-right"><span className="robot-foot" /></span>
       </div>
     </div>
   );
@@ -194,6 +198,44 @@ function CloudBank({ variant = "" }) {
   );
 }
 
+function CountUp({ end, suffix = "", duration = 2000 }) {
+  const [count, setCount] = useState(0);
+  const [hasStarted, setHasStarted] = useState(false);
+  const ref = useRef(null);
+
+  useEffect(() => {
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        if (entry.isIntersecting && !hasStarted) {
+          setHasStarted(true);
+        }
+      },
+      { threshold: 0.3 }
+    );
+    if (ref.current) observer.observe(ref.current);
+    return () => observer.disconnect();
+  }, [hasStarted]);
+
+  useEffect(() => {
+    if (!hasStarted) return;
+    let start = 0;
+    const startTime = performance.now();
+    const step = (now) => {
+      const progress = Math.min((now - startTime) / duration, 1);
+      const eased = 1 - Math.pow(1 - progress, 3);
+      setCount(Math.floor(eased * end));
+      if (progress < 1) requestAnimationFrame(step);
+    };
+    requestAnimationFrame(step);
+  }, [hasStarted, end, duration]);
+
+  return (
+    <span ref={ref}>
+      {count.toLocaleString()}{suffix}
+    </span>
+  );
+}
+
 function RoadmapItem({ item, index }) {
   const isLeft = index % 2 === 0;
   const ref = useRef(null);
@@ -204,81 +246,98 @@ function RoadmapItem({ item, index }) {
   });
 
   const pathLength = scrollYProgress;
-  const dotScale = useTransform(scrollYProgress, [0.78, 1], [0, 1]);
-  const contentOpacity = useTransform(scrollYProgress, [0.6, 1], [0, 1]);
-  const contentXLeft = useTransform(scrollYProgress, [0.6, 1], [40, 0]);
-  const contentXRight = useTransform(scrollYProgress, [0.6, 1], [-40, 0]);
-  const numberColor = useTransform(scrollYProgress, [0.6, 1], ["rgba(255,255,255,0.1)", "rgba(255,255,255,0.9)"]);
-  const midArrowOpacity = useTransform(scrollYProgress, [0.42, 0.6], [0, 1]);
-  const endArrowOpacity = useTransform(scrollYProgress, [0.88, 1], [0, 1]);
+  const dotScale = useTransform(scrollYProgress, [0.7, 1], [0, 1]);
+  const contentOpacity = useTransform(scrollYProgress, [0.5, 0.9], [0, 1]);
+  const contentXLeft = useTransform(scrollYProgress, [0.5, 0.9], [50, 0]);
+  const contentXRight = useTransform(scrollYProgress, [0.5, 0.9], [-50, 0]);
+  const numberColor = useTransform(scrollYProgress, [0.5, 1], ["rgba(255,255,255,0.06)", "rgba(255,255,255,0.85)"]);
+  const arrowOpacity1 = useTransform(scrollYProgress, [0.3, 0.5], [0, 1]);
+  const arrowOpacity2 = useTransform(scrollYProgress, [0.55, 0.75], [0, 1]);
+  const arrowOpacity3 = useTransform(scrollYProgress, [0.8, 0.95], [0, 1]);
+  const pinBounce = useTransform(scrollYProgress, [0.75, 0.85, 0.95, 1], [0, -8, 2, 0]);
 
-  // S-curve treasure-hunt paths — swing wide left or right then curve back
+  // Dramatic curly S-curve paths — wider swings with a loop-de-loop feel
   const pathD = isLeft
-    ? "M 50 0 C 70 10, 5 35, 15 50 C 25 65, 55 80, 50 100"
-    : "M 50 0 C 30 10, 95 35, 85 50 C 75 65, 45 80, 50 100";
+    ? "M 50 0 C 80 5, 90 18, 20 30 C -10 38, 5 48, 15 52 C 30 58, 70 72, 50 100"
+    : "M 50 0 C 20 5, 10 18, 80 30 C 110 38, 95 48, 85 52 C 70 58, 30 72, 50 100";
 
-  // Tangent angles (degrees, SVG clockwise from +x) at midpoint and endpoint
-  const midRotate = isLeft ? 56 : 124;
-  const endRotate = isLeft ? 104 : 76;
+  // Arrow positions along the curly path
+  const arrows = isLeft
+    ? [
+        { x: 20, y: 30, rot: 170 },
+        { x: 15, y: 52, rot: 40 },
+        { x: 50, y: 97, rot: 100 },
+      ]
+    : [
+        { x: 80, y: 30, rot: 10 },
+        { x: 85, y: 52, rot: 140 },
+        { x: 50, y: 97, rot: 80 },
+      ];
+  const arrowOps = [arrowOpacity1, arrowOpacity2, arrowOpacity3];
 
   return (
-    <div ref={ref} className="roadmap-item" style={{ position: "relative", width: "100%", minHeight: "220px", display: "flex", alignItems: "center" }}>
+    <div ref={ref} className="roadmap-item" style={{ position: "relative", width: "100%", minHeight: "240px", display: "flex", alignItems: "center" }}>
 
       <svg viewBox="0 0 100 100" preserveAspectRatio="none" style={{ position: "absolute", top: 0, left: 0, width: "100%", height: "100%", zIndex: 0, pointerEvents: "none" }}>
-        {/* Dashed ghost trail */}
+        {/* Dashed treasure-map ghost trail */}
         <path
           d={pathD}
           vectorEffect="non-scaling-stroke"
           fill="none"
-          stroke="rgba(255,255,255,0.12)"
-          strokeWidth="2.5"
-          strokeDasharray="5 5"
+          stroke="rgba(255,255,255,0.08)"
+          strokeWidth="2"
+          strokeDasharray="6 4"
         />
 
-        {/* Animated glowing path */}
+        {/* Animated glowing curly path */}
         <motion.path
           d={pathD}
           vectorEffect="non-scaling-stroke"
           fill="none"
-          stroke="var(--mint)"
-          strokeWidth="3.5"
-          style={{ filter: "drop-shadow(0 0 7px rgba(13,223,168,0.9))", pathLength }}
+          stroke="url(#treasureGrad)"
+          strokeWidth="3"
+          strokeLinecap="round"
+          style={{ filter: "drop-shadow(0 0 8px rgba(13,223,168,0.8))", pathLength }}
         />
 
-        {/* Mid-point arrowhead — appears at ~50% scroll */}
-        <motion.polygon
-          points="0,-4.5 5,3.5 -5,3.5"
-          fill="var(--mint)"
-          transform={`translate(${isLeft ? 15 : 85}, 50) rotate(${midRotate})`}
-          style={{ filter: "drop-shadow(0 0 5px rgba(13,223,168,0.9))", opacity: midArrowOpacity }}
-        />
+        {/* Gradient definition */}
+        <defs>
+          <linearGradient id="treasureGrad" x1="0" y1="0" x2="0" y2="1">
+            <stop offset="0%" stopColor="var(--cyan)" />
+            <stop offset="50%" stopColor="var(--mint)" />
+            <stop offset="100%" stopColor="var(--cyan)" />
+          </linearGradient>
+        </defs>
 
-        {/* End arrowhead — appears as path completes */}
-        <motion.polygon
-          points="0,-5.5 6,4.5 -6,4.5"
-          fill="var(--mint)"
-          transform={`translate(50, 97) rotate(${endRotate})`}
-          style={{ filter: "drop-shadow(0 0 6px rgba(13,223,168,1))", opacity: endArrowOpacity }}
-        />
+        {/* Curly arrow markers along path */}
+        {arrows.map((a, i) => (
+          <motion.polygon
+            key={i}
+            points="0,-4 4.5,3 -4.5,3"
+            fill="var(--mint)"
+            transform={`translate(${a.x}, ${a.y}) rotate(${a.rot})`}
+            style={{ filter: "drop-shadow(0 0 5px rgba(13,223,168,0.9))", opacity: arrowOps[i] }}
+          />
+        ))}
       </svg>
 
-      {/* Waypoint dot at path midpoint */}
+      {/* Treasure pin waypoint at path's widest point */}
       <motion.div
+        className="treasure-pin"
         style={{
           position: "absolute",
-          top: "50%",
-          left: isLeft ? "15%" : "85%",
+          top: "30%",
+          left: isLeft ? "20%" : "80%",
           transform: "translate(-50%, -50%)",
-          width: "20px",
-          height: "20px",
-          backgroundColor: "var(--mint)",
-          borderRadius: "50%",
-          boxShadow: "0 0 16px var(--mint), 0 0 32px rgba(13,223,168,0.4)",
-          zIndex: 2,
+          zIndex: 3,
           scale: dotScale,
           opacity: dotScale,
+          y: pinBounce,
         }}
-      />
+      >
+        <span className="pin-head" />
+        <span className="pin-spike" />
+      </motion.div>
 
       <div style={{
         position: "relative",
@@ -295,7 +354,7 @@ function RoadmapItem({ item, index }) {
             <motion.span className="timeline-number" style={{ fontSize: "8rem", margin: 0, lineHeight: 0.8, fontWeight: 900, color: numberColor }}>
               {index + 1}
             </motion.span>
-            <motion.div style={{ textAlign: "left", maxWidth: "350px", opacity: contentOpacity, x: contentXLeft }}>
+            <motion.div className="timeline-card-content" style={{ textAlign: "left", maxWidth: "350px", opacity: contentOpacity, x: contentXLeft }}>
               <h3 style={{ color: "var(--mint)", fontSize: "1.6rem", margin: "0 0 8px 0", fontWeight: 900 }}>{item.title}</h3>
               <p style={{ color: "#fff", fontSize: "1rem", fontWeight: 700, margin: "0 0 6px 0" }}>{item.date}</p>
               <span style={{ color: "#8b9a9c", fontSize: "0.9rem", display: "block", fontWeight: 600 }}>{item.text}</span>
@@ -303,7 +362,7 @@ function RoadmapItem({ item, index }) {
           </>
         ) : (
           <>
-            <motion.div style={{ textAlign: "right", maxWidth: "350px", opacity: contentOpacity, x: contentXRight }}>
+            <motion.div className="timeline-card-content" style={{ textAlign: "right", maxWidth: "350px", opacity: contentOpacity, x: contentXRight }}>
               <h3 style={{ color: "var(--mint)", fontSize: "1.6rem", margin: "0 0 8px 0", fontWeight: 900 }}>{item.title}</h3>
               <p style={{ color: "#fff", fontSize: "1rem", fontWeight: 700, margin: "0 0 6px 0" }}>{item.date}</p>
               <span style={{ color: "#8b9a9c", fontSize: "0.9rem", display: "block", fontWeight: 600 }}>{item.text}</span>
@@ -544,7 +603,7 @@ function Home() {
             viewport={{ once: true }}
             transition={{ duration: 0.5 }}
           >
-            <strong>4,497+</strong>
+            <strong><CountUp end={4497} suffix="+" duration={2200} /></strong>
             <span>Hackers, viewers, and community members reached last season.</span>
           </motion.article>
           <motion.article
@@ -554,7 +613,7 @@ function Home() {
             transition={{ duration: 0.5, delay: 0.1 }}
           >
             <Code2 size={26} />
-            <strong>120+</strong>
+            <strong><CountUp end={120} suffix="+" duration={1800} /></strong>
             <span>Project ideas shaped across tracks.</span>
           </motion.article>
           <motion.article
@@ -564,7 +623,7 @@ function Home() {
             transition={{ duration: 0.5, delay: 0.2 }}
           >
             <Globe2 size={26} />
-            <strong>15+</strong>
+            <strong><CountUp end={15} suffix="+" duration={1500} /></strong>
             <span>Partner communities and mentors.</span>
           </motion.article>
         </div>
@@ -642,25 +701,6 @@ function Home() {
         </div>
 
         <div className="contact-wrap" id="register">
-          <form
-            className="contact-form"
-            aria-label="Registration interest form"
-            onSubmit={(event) => event.preventDefault()}
-          >
-            <label>
-              Name
-              <input type="text" name="name" placeholder="Your name" />
-            </label>
-            <label>
-              Email
-              <input type="email" name="email" placeholder="you@example.com" />
-            </label>
-            <label>
-              Message
-              <textarea name="message" placeholder="Tell us what you want to build" />
-            </label>
-            <button type="submit">Send</button>
-          </form>
 
           <div className="contact-copy">
             <p className="eyebrow">Get in touch</p>
