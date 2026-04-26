@@ -153,7 +153,7 @@ const faqs = [
 const socialLinks = [
   { icon: Instagram, label: "Instagram", href: "https://www.instagram.com/codenest_osdc?igsh=bm93ZXJwMDJ5ZjJu" },
   { icon: Linkedin, label: "LinkedIn", href: "https://www.linkedin.com/company/codenest-osdc/" },
-  { icon: Github, label: "GitHub", href: "https://github.com/" },
+  { icon: Github, label: "GitHub", href: "https://github.com/CodeNest-OSDC" },
   { icon: Mail, label: "Email", href: "mailto:codeforchange2.0@gmail.com" },
 ];
 
@@ -197,103 +197,124 @@ function CloudBank({ variant = "" }) {
 function RoadmapItem({ item, index }) {
   const isLeft = index % 2 === 0;
   const ref = useRef(null);
-  
+
   const { scrollYProgress } = useScroll({
     target: ref,
-    offset: ["start 85%", "center center"]
+    offset: ["start 85%", "center center"],
   });
 
   const pathLength = scrollYProgress;
-  const dotScale = useTransform(scrollYProgress, [0.8, 1], [0, 1]);
+  const dotScale = useTransform(scrollYProgress, [0.78, 1], [0, 1]);
   const contentOpacity = useTransform(scrollYProgress, [0.6, 1], [0, 1]);
   const contentXLeft = useTransform(scrollYProgress, [0.6, 1], [40, 0]);
   const contentXRight = useTransform(scrollYProgress, [0.6, 1], [-40, 0]);
-  const numberColor = useTransform(scrollYProgress, [0.6, 1], ['rgba(255, 255, 255, 0.1)', 'rgba(255, 255, 255, 0.9)']);
+  const numberColor = useTransform(scrollYProgress, [0.6, 1], ["rgba(255,255,255,0.1)", "rgba(255,255,255,0.9)"]);
+  const midArrowOpacity = useTransform(scrollYProgress, [0.42, 0.6], [0, 1]);
+  const endArrowOpacity = useTransform(scrollYProgress, [0.88, 1], [0, 1]);
+
+  // S-curve treasure-hunt paths — swing wide left or right then curve back
+  const pathD = isLeft
+    ? "M 50 0 C 70 10, 5 35, 15 50 C 25 65, 55 80, 50 100"
+    : "M 50 0 C 30 10, 95 35, 85 50 C 75 65, 45 80, 50 100";
+
+  // Tangent angles (degrees, SVG clockwise from +x) at midpoint and endpoint
+  const midRotate = isLeft ? 56 : 124;
+  const endRotate = isLeft ? 104 : 76;
 
   return (
-    <div ref={ref} className="roadmap-item" style={{ position: 'relative', width: '100%', minHeight: '220px', display: 'flex', alignItems: 'center' }}>
-      
-      <svg viewBox="0 0 100 100" preserveAspectRatio="none" style={{ position: 'absolute', top: 0, left: 0, width: '100%', height: '100%', zIndex: 0, pointerEvents: 'none' }}>
-        <path 
-          d={isLeft 
-            ? "M 50 0 C 50 20, 15 20, 15 50 C 15 80, 50 80, 50 100" 
-            : "M 50 0 C 50 20, 85 20, 85 50 C 85 80, 50 80, 50 100"} 
+    <div ref={ref} className="roadmap-item" style={{ position: "relative", width: "100%", minHeight: "220px", display: "flex", alignItems: "center" }}>
+
+      <svg viewBox="0 0 100 100" preserveAspectRatio="none" style={{ position: "absolute", top: 0, left: 0, width: "100%", height: "100%", zIndex: 0, pointerEvents: "none" }}>
+        {/* Dashed ghost trail */}
+        <path
+          d={pathD}
           vectorEffect="non-scaling-stroke"
-          fill="none" 
-          stroke="rgba(255, 255, 255, 0.15)" 
-          strokeWidth="3" 
-          strokeDasharray="6 6" 
+          fill="none"
+          stroke="rgba(255,255,255,0.12)"
+          strokeWidth="2.5"
+          strokeDasharray="5 5"
         />
-        <motion.path 
-          d={isLeft 
-            ? "M 50 0 C 50 20, 15 20, 15 50 C 15 80, 50 80, 50 100" 
-            : "M 50 0 C 50 20, 85 20, 85 50 C 85 80, 50 80, 50 100"} 
+
+        {/* Animated glowing path */}
+        <motion.path
+          d={pathD}
           vectorEffect="non-scaling-stroke"
-          fill="none" 
-          stroke="var(--mint)" 
-          strokeWidth="4" 
-          style={{ filter: "drop-shadow(0 0 8px rgba(13, 223, 168, 0.8))", pathLength }}
+          fill="none"
+          stroke="var(--mint)"
+          strokeWidth="3.5"
+          style={{ filter: "drop-shadow(0 0 7px rgba(13,223,168,0.9))", pathLength }}
+        />
+
+        {/* Mid-point arrowhead — appears at ~50% scroll */}
+        <motion.polygon
+          points="0,-4.5 5,3.5 -5,3.5"
+          fill="var(--mint)"
+          transform={`translate(${isLeft ? 15 : 85}, 50) rotate(${midRotate})`}
+          style={{ filter: "drop-shadow(0 0 5px rgba(13,223,168,0.9))", opacity: midArrowOpacity }}
+        />
+
+        {/* End arrowhead — appears as path completes */}
+        <motion.polygon
+          points="0,-5.5 6,4.5 -6,4.5"
+          fill="var(--mint)"
+          transform={`translate(50, 97) rotate(${endRotate})`}
+          style={{ filter: "drop-shadow(0 0 6px rgba(13,223,168,1))", opacity: endArrowOpacity }}
         />
       </svg>
 
+      {/* Waypoint dot at path midpoint */}
       <motion.div
         style={{
-          position: 'absolute',
-          top: '50%',
-          left: isLeft ? '15%' : '85%',
-          transform: 'translate(-50%, -50%)',
-          width: '20px',
-          height: '20px',
-          backgroundColor: 'var(--mint)',
-          borderRadius: '50%',
-          boxShadow: '0 0 15px var(--mint)',
+          position: "absolute",
+          top: "50%",
+          left: isLeft ? "15%" : "85%",
+          transform: "translate(-50%, -50%)",
+          width: "20px",
+          height: "20px",
+          backgroundColor: "var(--mint)",
+          borderRadius: "50%",
+          boxShadow: "0 0 16px var(--mint), 0 0 32px rgba(13,223,168,0.4)",
           zIndex: 2,
           scale: dotScale,
-          opacity: dotScale
+          opacity: dotScale,
         }}
       />
 
       <div style={{
-        position: 'relative',
+        position: "relative",
         zIndex: 1,
-        display: 'flex',
-        width: '100%',
-        justifyContent: isLeft ? 'flex-start' : 'flex-end',
-        padding: isLeft ? '0 0 0 18%' : '0 18% 0 0',
-        alignItems: 'center',
-        gap: '30px'
+        display: "flex",
+        width: "100%",
+        justifyContent: isLeft ? "flex-start" : "flex-end",
+        padding: isLeft ? "0 0 0 18%" : "0 18% 0 0",
+        alignItems: "center",
+        gap: "30px",
       }}>
         {isLeft ? (
           <>
-            <motion.span 
-              className="timeline-number" 
-              style={{ fontSize: '8rem', margin: 0, lineHeight: 0.8, fontWeight: 900, color: numberColor }}
-            >
+            <motion.span className="timeline-number" style={{ fontSize: "8rem", margin: 0, lineHeight: 0.8, fontWeight: 900, color: numberColor }}>
               {index + 1}
             </motion.span>
-            <motion.div style={{ textAlign: 'left', maxWidth: '350px', opacity: contentOpacity, x: contentXLeft }}>
-              <h3 style={{ color: 'var(--mint)', fontSize: '1.6rem', margin: '0 0 8px 0', fontWeight: '900' }}>{item.title}</h3>
-              <p style={{ color: '#fff', fontSize: '1rem', fontWeight: '700', margin: '0 0 6px 0' }}>{item.date}</p>
-              <span style={{ color: '#8b9a9c', fontSize: '0.9rem', display: 'block', fontWeight: 600 }}>{item.text}</span>
+            <motion.div style={{ textAlign: "left", maxWidth: "350px", opacity: contentOpacity, x: contentXLeft }}>
+              <h3 style={{ color: "var(--mint)", fontSize: "1.6rem", margin: "0 0 8px 0", fontWeight: 900 }}>{item.title}</h3>
+              <p style={{ color: "#fff", fontSize: "1rem", fontWeight: 700, margin: "0 0 6px 0" }}>{item.date}</p>
+              <span style={{ color: "#8b9a9c", fontSize: "0.9rem", display: "block", fontWeight: 600 }}>{item.text}</span>
             </motion.div>
           </>
         ) : (
           <>
-            <motion.div style={{ textAlign: 'right', maxWidth: '350px', opacity: contentOpacity, x: contentXRight }}>
-              <h3 style={{ color: 'var(--mint)', fontSize: '1.6rem', margin: '0 0 8px 0', fontWeight: '900' }}>{item.title}</h3>
-              <p style={{ color: '#fff', fontSize: '1rem', fontWeight: '700', margin: '0 0 6px 0' }}>{item.date}</p>
-              <span style={{ color: '#8b9a9c', fontSize: '0.9rem', display: 'block', fontWeight: 600 }}>{item.text}</span>
+            <motion.div style={{ textAlign: "right", maxWidth: "350px", opacity: contentOpacity, x: contentXRight }}>
+              <h3 style={{ color: "var(--mint)", fontSize: "1.6rem", margin: "0 0 8px 0", fontWeight: 900 }}>{item.title}</h3>
+              <p style={{ color: "#fff", fontSize: "1rem", fontWeight: 700, margin: "0 0 6px 0" }}>{item.date}</p>
+              <span style={{ color: "#8b9a9c", fontSize: "0.9rem", display: "block", fontWeight: 600 }}>{item.text}</span>
             </motion.div>
-            <motion.span 
-              className="timeline-number" 
-              style={{ fontSize: '8rem', margin: 0, lineHeight: 0.8, fontWeight: 900, color: numberColor }}
-            >
+            <motion.span className="timeline-number" style={{ fontSize: "8rem", margin: 0, lineHeight: 0.8, fontWeight: 900, color: numberColor }}>
               {index + 1}
             </motion.span>
           </>
         )}
       </div>
-      
+
     </div>
   );
 }
@@ -664,12 +685,14 @@ function Home() {
               <p>A bright 24-hour hackathon where curious builders turn practical problems into polished prototypes.</p>
               <div className="footer-socials">
                 {socialLinks.map((social) => (
-                  <a href={social.href} aria-label={social.label} key={social.label} target="_blank" rel="noreferrer">
+                  <a href={social.href} aria-label={social.label} key={social.label} target="_blank" rel="noreferrer" title={social.label}>
                     <social.icon size={18} />
+                    <span>{social.label}</span>
                   </a>
                 ))}
-                <a href="https://discord.gg/VPprt8haws" aria-label="Discord" target="_blank" rel="noreferrer">
+                <a href="https://discord.gg/VPprt8haws" aria-label="Discord" target="_blank" rel="noreferrer" title="Discord">
                   <MessageCircle size={18} />
+                  <span>Discord</span>
                 </a>
               </div>
             </div>
@@ -688,7 +711,15 @@ function Home() {
 
             <div className="footer-map-col">
               <h3>Location</h3>
-              <p><MapPin size={16} /> NSHM Knowledge Campus, Durgapur</p>
+              <a 
+                href="https://maps.app.goo.gl/oXZW9c3jRTYv3Mh97" 
+                target="_blank" 
+                rel="noreferrer" 
+                className="footer-location-link"
+                title="View on Google Maps"
+              >
+                <MapPin size={16} /> NSHM Knowledge Campus, Durgapur
+              </a>
               <div className="footer-map-wrapper">
                 <iframe 
                   src="https://maps.google.com/maps?q=NSHM%20Knowledge%20Campus,%20Durgapur&t=&z=15&ie=UTF8&iwloc=&output=embed" 
